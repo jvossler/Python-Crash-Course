@@ -1,0 +1,916 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Ch. 9: Classes\n",
+    "\n",
+    "In *object-oriented programming* you write *classes* that represebt real-world things and situations, and you create *objects* based on these classes. When you write a class, you define the general behavior that a whole category of objects can have.\n",
+    "\n",
+    "Making an object from a class if called *instantiation*, and you work with *instances* of a class.\n",
+    "-  In this chapter you’ll write classes and create instances of those classes. You’ll specify the kind of information that can be stored in instances, and you’ll define actions that can be taken with these instances. You’ll also write classes that extend the functionality of existing classes, so similar classes can share code efficiently. You’ll store your classes in mod-ules and import classes written by other programmers into your own pro-gram files.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Creating and Using a Class"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Creating a Class\n",
+    "### Creating the Dog Class\n",
+    "\n",
+    "Each instance created from the Dog class will store a name and an age, and we’ll give each dog the ability to sit() and roll_over():\n",
+    "\n",
+    "1. Define a class *Dog*\n",
+    "2. Write a docstring describing what this class does\n",
+    "   \n",
+    "### The `__init__()` Method\n",
+    "3. **`__init__`** is a special method that Python runs automatically whenever we create a new instance based on the Dog class\n",
+    "   1. Has `two leading underscores and two trailing underscores`, **a convention that helps prevent Python's default method names of conflicting with your method names.**\n",
+    "      1. If you do not use the underscores correctly, the method won't be called automatically when you use your class, which can result in errors that are difficult to identify.\n",
+    "\n",
+    "We define the `__init__()` method to have three parameters: `self`, `name`, and `age`. ***The self parameter is required in the method definition, and it must come first before the other parameters.*** It must be included in the definition because when Python calls this method later (to create an instance of Dog), the method call will automatically pass the self argument. *Every method call associated with an instance automatically passes self, which is a reference to the instance itself; it gives the individual instance access to the attributes and methods in the class.* When we make an instance of Dog, Python will call the `__init__()` method from the Dog class. ***We’ll pass `Dog()` a name and an age as arguments; self is passed automatically, so we don’t need to pass it.*** Whenever we want to make an instance from the Dog class, we’ll provide values for only the last two parameters, name and age.\n",
+    "\n",
+    "1. Two of the variables have the prefix `self`. ***Any variable prefixed with `self` is available to every method in the class, and we'll also be able to access these variables through any instance created from the class.***\n",
+    "   1. The line `self.name = name` takes the value associated with the parameter `name` and assigns it to the variable `name`, which is then attached to the instance being created.\n",
+    "      1. Variables that are accessible through instances like this are called `attributes`.\n",
+    "2. The Dog class has two other methods defined: sit() and roll_over(). Because these methods don’t need additional information to run, we just define them to have one parameter, `self`. The instances we create later will have access to these methods. In other words, they’ll be able to sit and roll over."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "class Dog:\n",
+    "    \"\"\"Aimple attempt to model a dog.\"\"\"\n",
+    "\n",
+    "    def __init__(self, name, age):\n",
+    "        \"\"\"Initialize name and age attributes.\"\"\"\n",
+    "        self.name = name\n",
+    "        self.age = age\n",
+    "\n",
+    "    def sit(self):\n",
+    "        \"\"\"Simulate a dog sitting in response to a command.\"\"\"\n",
+    "        print(f\"{self.name} is now sitting.\")\n",
+    "\n",
+    "    def roll_over(self):\n",
+    "        \"\"\"Simulate rolling over in response to a command.\"\"\"\n",
+    "        print(f\"{self.name} rolled over!\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Making an Instance from a Class\n",
+    "\n",
+    "Think of a class as a set of instructions for how to make an instance. The class Dog is a set of instructions that tells Python how to make individual instances representing specific dogs.Let’s make an instance representing a specific dog:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "My dog's name is Willie.\n",
+      "My dog is 6.\n"
+     ]
+    }
+   ],
+   "source": [
+    "class Dog:\n",
+    "    \"\"\"Aimple attempt to model a dog.\"\"\"\n",
+    "\n",
+    "    def __init__(self, name, age):\n",
+    "        \"\"\"Initialize name and age attributes.\"\"\"\n",
+    "        self.name = name\n",
+    "        self.age = age\n",
+    "\n",
+    "    def sit(self):\n",
+    "        \"\"\"Simulate a dog sitting in response to a command.\"\"\"\n",
+    "        print(f\"{self.name} is now sitting.\")\n",
+    "\n",
+    "    def roll_over(self):\n",
+    "        \"\"\"Simulate rolling over in response to a command.\"\"\"\n",
+    "        print(f\"{self.name} rolled over!\")\n",
+    "\n",
+    "my_dog = Dog('willie', 6)\n",
+    "\n",
+    "print(f\"My dog's name is {my_dog.name.title()}.\")\n",
+    "print(f\"My dog is {my_dog.age}.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "At u we tell Python to create a dog whose name is 'Willie' and whose age is 6. When Python reads this line, it calls the `__init__()` method in Dog with the arguments 'Willie' and 6. The `__init__()` method creates an instance representing this particular dog and sets the name and age attributes using the values we provided. Python then returns an instance representing this dog. We assign that instance to the variable my_dog. The naming conven-tion is helpful here: ***we can usually assume that a capitalized name like Dog refers to a class, and a lowercase name like my_dog refers to a single instance created from a class.***"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Accessing Attributes\n",
+    "\n",
+    "To access the attributes of an instance, you use dot notation. At v we access the value of my_dog’s attribute name by writing:\n",
+    "\n",
+    "*`my_dog.name`*"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Calling Methods\n",
+    "\n",
+    "After we create an instance from the class Dog, we can use dot notation to call any method defined in Dog. Let’s make our dog sit and roll over:\n",
+    "\n",
+    "To call a method, give the name of the instance (in this case, my_dog) and the method you want to call, separated by a dot. When Python reads my_dog.sit(), it looks for the method sit() in the class Dog and runs that code. Python interprets the line my_dog.roll_over() in the same way.\n",
+    "\n",
+    "This syntax is quite useful. When attributes and methods have been given ***appropriately descriptive names*** like name, age, sit(), and roll_over(), we can easily infer what a block of code, even one we’ve never seen before, is supposed to do."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "willie is now sitting.\n",
+      "willie rolled over!\n"
+     ]
+    }
+   ],
+   "source": [
+    "class Dog:\n",
+    "    \"\"\"Aimple attempt to model a dog.\"\"\"\n",
+    "\n",
+    "    def __init__(self, name, age):\n",
+    "        \"\"\"Initialize name and age attributes.\"\"\"\n",
+    "        self.name = name\n",
+    "        self.age = age\n",
+    "\n",
+    "    def sit(self):\n",
+    "        \"\"\"Simulate a dog sitting in response to a command.\"\"\"\n",
+    "        print(f\"{self.name} is now sitting.\")\n",
+    "\n",
+    "    def roll_over(self):\n",
+    "        \"\"\"Simulate rolling over in response to a command.\"\"\"\n",
+    "        print(f\"{self.name} rolled over!\")\n",
+    "\n",
+    "my_dog = Dog('willie', 6)\n",
+    "\n",
+    "my_dog.sit()\n",
+    "my_dog.roll_over()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Creating Multiple Instances\n",
+    "\n",
+    "You can create as many instances from a class as you need. Let’s create a second dog called your_dog:\n",
+    "\n",
+    "In this example we create a dog named Willie and a dog named Lucy. Each dog is a separate instance with its own set of attributes, capable of the same set of actions:\n",
+    "\n",
+    "Even if we used the same name and age for the second dog, Python would still create a separate instance from the Dog class. You can make\n",
+    "as many instances from one class as you need, as long as you give each instance a unique variable name or it occupies a unique spot in a list or dictionary.\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "My dog's name is Willie.\n",
+      "My dog is 6 years old.\n",
+      "Willie is now sitting.\n",
+      "\n",
+      "Your dog's name is Lucy.\n",
+      "Your dog is 3 years old.\n",
+      "Lucy is now sitting.\n"
+     ]
+    }
+   ],
+   "source": [
+    "class Dog:\n",
+    "    \"\"\"A simple attempt to model a dog.\"\"\"\n",
+    "\n",
+    "    def __init__(self, name, age):\n",
+    "        \"\"\"Initialize name and age attributes.\"\"\"\n",
+    "        self.name = name.title()\n",
+    "        self.age = age\n",
+    "\n",
+    "    def sit(self):\n",
+    "        \"\"\"Simulate a dog sitting in response to a command.\"\"\"\n",
+    "        print(f\"{self.name} is now sitting.\")\n",
+    "\n",
+    "    def roll_over(self):\n",
+    "        \"\"\"Simulate rolling over in response to a command.\"\"\"\n",
+    "        print(f\"{self.name} rolled over!\")\n",
+    "\n",
+    "my_dog = Dog('willie', 6)\n",
+    "your_dog = Dog('Lucy', 3)\n",
+    "\n",
+    "print(f\"My dog's name is {my_dog.name}.\")\n",
+    "print(f\"My dog is {my_dog.age} years old.\")\n",
+    "my_dog.sit()\n",
+    "\n",
+    "print(f\"\\nYour dog's name is {your_dog.name}.\")\n",
+    "print(f\"Your dog is {your_dog.age} years old.\")\n",
+    "your_dog.sit()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Try It Yourself\n",
+    "\n",
+    "9-1. Restaurant: Make a class called Restaurant. The `__init__()` method for Restaurant should store two attributes: a restaurant_name and a cuisine_type. Make a method called describe_restaurant() that prints these two pieces of information, and a method called open_restaurant() that prints a message indi-cating that the restaurant is open.\n",
+    "\n",
+    "Make an instance called restaurant from your class. Print the two attri-butes individually, and then call both methods.\n",
+    "\n",
+    "9-2. Three Restaurants: Start with your class from Exercise 9-1. Create three different instances from the class, and call describe_restaurant() for each instance.\n",
+    "\n",
+    "9-3. Users: Make a class called User. Create two attributes called first_nameand last_name, and then create several other attributes that are typically stored in a user profile. Make a method called describe_user() that prints a summary of the user’s information. Make another method called greet_user() that prints a personalized greeting to the user.\n",
+    "\n",
+    "Create several instances representing different users, and call both methods for each user."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "My favorite restaurant is Wonton Central and they offer chinese to eat.\n",
+      "\n",
+      "Your favorite resaurant is Texas Roadhouse and they offer barbecue as a cuisine.\n",
+      "\n",
+      "Wonton Central offers chinese as a cuisine option.\n",
+      "Texas Roadhouse is now open for business!\n",
+      "\n",
+      "\n",
+      "Wonton Central is now open for business!\n",
+      "Texas Roadhouse offers barbecue as a cuisine option.\n"
+     ]
+    }
+   ],
+   "source": [
+    "class Restaurant:\n",
+    "    \"\"\"Create a model for a restaurant and its attributes.\"\"\"\n",
+    "\n",
+    "    def __init__(self, restaurant_name, cuisine_type):\n",
+    "        self.restaurant_name = restaurant_name.title()\n",
+    "        self.cuisine_type = cuisine_type\n",
+    "\n",
+    "    def describe_restaurant(self):\n",
+    "        \"\"\"Prints the restaurant name and cuisine type.\"\"\"\n",
+    "        print(f\"{self.restaurant_name} offers {self.cuisine_type} as a cuisine option.\")\n",
+    "\n",
+    "    \n",
+    "    def open_restaurant(self):\n",
+    "        \"\"\"Print a message indicating a restaurant is open.\"\"\"\n",
+    "        print(f\"{self.restaurant_name} is now open for business!\")\n",
+    "\n",
+    "my_restaurant = Restaurant('wonton central', 'chinese')\n",
+    "your_restaurant = Restaurant('texas roadhouse', 'barbecue')\n",
+    "\n",
+    "print(f\"\\nMy favorite restaurant is {my_restaurant.restaurant_name} and they offer {my_restaurant.cuisine_type} to eat.\")\n",
+    "print(f\"\\nYour favorite resaurant is {your_restaurant.restaurant_name} and they offer {your_restaurant.cuisine_type} as a cuisine.\\n\")\n",
+    "\n",
+    "my_restaurant.describe_restaurant()\n",
+    "your_restaurant.open_restaurant()\n",
+    "print(\"\\n\")\n",
+    "my_restaurant.open_restaurant()\n",
+    "your_restaurant.describe_restaurant()\n",
+    "\n",
+    "# print(my_restaurant)\n",
+    "# print(your_restaurant)\n",
+    "# Restaurant('test restaurant', 'test cuisine')\n",
+    "# print(Restaurant)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "User: \n",
+      "First name: John\n",
+      "Last name: Halladay\n",
+      "\n",
+      "\n",
+      "Welcome, John Halladay!\n"
+     ]
+    }
+   ],
+   "source": [
+    "class User:\n",
+    "    \"\"\"Class to collect details about users.\"\"\"\n",
+    "\n",
+    "    def __init__(self, first_name, last_name):\n",
+    "        self.first_name = first_name.title()\n",
+    "        self.last_name = last_name.title()\n",
+    "\n",
+    "    def describe_user(self):\n",
+    "        \"\"\"Describe details about a user.\"\"\"\n",
+    "        print(f\"User: \\nFirst name: {self.first_name}\\nLast name: {self.last_name}\")\n",
+    "    \n",
+    "    def greet_user(self):\n",
+    "        \"\"\"Greets a provided user.\"\"\"\n",
+    "        print(f\"Welcome, {self.first_name} {self.last_name}!\")\n",
+    "\n",
+    "user_info = User('john', 'halladay')\n",
+    "\n",
+    "user_info.describe_user()\n",
+    "print(\"\\n\")\n",
+    "user_info.greet_user()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Working with Classes and Instances\n",
+    "You can use classes to represent many real-world situations. Once you write\n",
+    "a class, you’ll spend most of your time working with instances created from\n",
+    "that class. One of the first tasks you’ll want to do is modify the attributes\n",
+    "associated with a particular instance. **You can modify the attributes of an\n",
+    "instance directly or write methods that update attributes in specific ways.**\n",
+    "\n",
+    "At u in the Car class, we define the __init__() method with the self\n",
+    "parameter first, just like we did before with our Dog class. We also give\n",
+    "it three other parameters: make, model, and year. ***The `__init__()` method\n",
+    "takes in these parameters and assigns them to the attributes that will be\n",
+    "associated with instances made from this class.*** When we make a new Car\n",
+    "instance, we’ll need to specify a make, model, and year for our instance.\n",
+    "\n",
+    "At v we define a method called get_descriptive_name() that puts a car’s\n",
+    "year, make, and model into one string neatly describing the car. This will spare\n",
+    "us from having to print each attribute’s value individually. ***To work with the\n",
+    "attribute values in this method, we use `self.make`, `self.model`, and `self.year`.***\n",
+    "At w we make an instance from the Car class and assign it to the variable\n",
+    "my_new_car. Then we call get_descriptive_name() to show what kind of car\n",
+    "we have:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## The Car Class\n",
+    "\n",
+    "At u in the Car class, we define the __init__() method with the selfparameter first, just like we did before with our Dog class. We also give it three other parameters: make, model, and year. The __init__() method takes in these parameters and assigns them to the attributes that will be associated with instances made from this class. When we make a new Carinstance, we’ll need to specify a make, model, and year for our instance.\n",
+    "\n",
+    "At v we define a method called get_descriptive_name() that puts a car’s year, make, and model into one string neatly describing the car. This will spare us from having to print each attribute’s value individually. To work with the attribute values in this method, we use self.make, self.model, and self.year. At w we make an instance from the Car class and assign it to the variable my_new_car. Then we call get_descriptive_name() to show what kind of car we have:"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< Updated upstream
+   "execution_count": 8,
+=======
+   "execution_count": 14,
+>>>>>>> Stashed changes
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+<<<<<<< Updated upstream
+      "2020 Ford F150\n",
+=======
+>>>>>>> Stashed changes
+      "2020 Ford F150\n"
+     ]
+    }
+   ],
+   "source": [
+    "class Car:\n",
+    "    \"\"\"A simple attempt to represent a car.\"\"\"\n",
+    "\n",
+    "    def __init__(self, make, model, year):\n",
+    "        \"\"\"Initialize attributes to describe a car.\"\"\"\n",
+    "        self.make = make.title()\n",
+    "        self.model = model.title()\n",
+    "        self.year = year\n",
+    "\n",
+    "    def get_descriptive_name(self):\n",
+    "        \"\"\"Return a neatly formatted descriptive name.\"\"\"\n",
+    "        long_name = f\"{self.year} {self.make} {self.model}\"\n",
+    "        return long_name\n",
+    "\n",
+    "make = input('What is the make of your new car?')\n",
+    "model = input('What is the model of your new car?')\n",
+    "year = int(input('What is the year of the new car?'))\n",
+    "\n",
+    "my_new_car = Car(make, model, year)\n",
+    "\n",
+    "print(my_new_car.get_descriptive_name())\n",
+    "print(Car(make, model, year).get_descriptive_name()) # Same thing as the line above"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To make the class more interesting, let’s add an attribute that changes over time. We’ll add an attribute that stores the car’s overall mileage."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Setting a Default Value for an Attribute\n",
+    "\n",
+    "***When an instance is created, attributes can be defined without being passed in as parameters. These attributes can be defined in the `__init__()` method, where they are assigned a default value.***\n",
+    "\n",
+    "Let’s add an attribute called odometer_reading that always starts with a value of 0. We’ll also add a method read_odometer() that helps us read each car’s odometer:\n",
+    "\n",
+    "This time when Python calls the `__init__()` method to create a new instance, it stores the make, model, and year values as attributes like it did in the previous example. Then Python creates a new attribute called odometer_reading and sets its initial value to 0 u. We also have a new method called read_odometer() at v that makes it easy to read a car’s mileage. Our car starts with a mileage of 0:\n",
+    "\n",
+    "Not many cars are sold with exactly 0 miles on the odometer, so we need a way to change the value of this attribute."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2020 Ford F150\n",
+      "This car has 0 miles on it.\n"
+     ]
+    }
+   ],
+   "source": [
+    "make = input('What is the make of your new car?')\n",
+    "model = input('What is the model of your new car?')\n",
+    "year = input('What is the year of the new car?')\n",
+    "\n",
+    "class Car:\n",
+    "    def __init__(self, make, model, year):\n",
+    "        \"\"\"Initialize attributes to describe a car.\"\"\"\n",
+    "        self.make = make.title()\n",
+    "        self.model = model.title()\n",
+    "        self.year = year\n",
+    "        self.odomoter_reading = 0\n",
+    "\n",
+    "    def get_descriptive_name(self):\n",
+    "        \"\"\"Return a neatly formatted descriptive name.\"\"\"\n",
+    "        long_name = f\"{self.year} {self.make} {self.model}\"\n",
+    "        return long_name\n",
+    "\n",
+    "    def read_odometer(self):\n",
+    "        \"\"\"Print a statement showing the car's mileage\"\"\"\n",
+    "        print(f\"This car has {self.odomoter_reading} miles on it.\")\n",
+    "\n",
+    "my_new_car = Car(make, model, year)\n",
+    "print(my_new_car.get_descriptive_name())\n",
+    "my_new_car.read_odometer()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Modifying Attribute Values\n",
+    "\n",
+    "You can change an attribute’s value in three ways: \n",
+    "- you can change the value directly through an instance, \n",
+    "- set the value through a method, \n",
+    "- or increment the value (add a certain amount to it) through a method. \n",
+    "\n",
+    "Let’s look at each of these approaches."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Modifying an Attribute’s Value Directly\n",
+    "\n",
+    "The simplest way to modify the value of an attribute is to access the attribute directly through an instance. Here we set the odometer reading to 23 directly:\n",
+    "\n",
+    "At u we use dot notation to access the car’s odometer_reading attri-bute and set its value directly. This line tells Python to take the instance my_new_car, find the attribute odometer_reading associated with it, and set the value of that attribute to 23:\n",
+    "\n",
+    "Sometimes you’ll want to access attributes directly like this, but other times you’ll want to write a method that updates the value for you."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2020 Ford F150\n",
+      "This car has 23 miles on it.\n"
+     ]
+    }
+   ],
+   "source": [
+    "make = input('What is the make of your new car?')\n",
+    "model = input('What is the model of your new car?')\n",
+    "year = input('What is the year of the new car?')\n",
+    "\n",
+    "class Car:\n",
+    "    def __init__(self, make, model, year):\n",
+    "        \"\"\"Initialize attributes to describe a car.\"\"\"\n",
+    "        self.make = make.title()\n",
+    "        self.model = model.title()\n",
+    "        self.year = year\n",
+    "        self.odomoter_reading = 0\n",
+    "\n",
+    "    def get_descriptive_name(self):\n",
+    "        \"\"\"Return a neatly formatted descriptive name.\"\"\"\n",
+    "        long_name = f\"{self.year} {self.make} {self.model}\"\n",
+    "        return long_name\n",
+    "\n",
+    "    def read_odometer(self):\n",
+    "        \"\"\"Print a statement showing the car's mileage\"\"\"\n",
+    "        print(f\"This car has {self.odomoter_reading} miles on it.\")\n",
+    "\n",
+    "my_new_car = Car(make, model, year)\n",
+    "print(my_new_car.get_descriptive_name())\n",
+    "\n",
+    "# Access odometer_reading() attribute and change it via this specific instance\n",
+    "my_new_car.odomoter_reading = 23\n",
+    "my_new_car.read_odometer()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Modifying an Attribute’s Value Through a Method\n",
+    "\n",
+    "It can be helpful to have methods that update certain attributes for you. Instead of accessing the attribute directly, you pass the new value to a method that handles the updating internally.\n",
+    "\n",
+    "Here’s an example showing a method called update_odometer():\n",
+    "\n",
+    "The only modification to Car is the addition of update_odometer() at u. This method takes in a mileage value and assigns it to self.odometer_reading. At v we call update_odometer() and give it 23 as an argument (corresponding to the mileage parameter in the method definition). It sets the odometer reading to 23, and read_odometer() prints the reading:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2020 Ford F150\n",
+      "This car has 23 miles on it.\n"
+     ]
+    }
+   ],
+   "source": [
+    "make = input('What is the make of your new car?')\n",
+    "model = input('What is the model of your new car?')\n",
+    "year = input('What is the year of the new car?')\n",
+    "\n",
+    "class Car:\n",
+    "    def __init__(self, make, model, year):\n",
+    "        \"\"\"Initialize attributes to describe a car.\"\"\"\n",
+    "        self.make = make.title()\n",
+    "        self.model = model.title()\n",
+    "        self.year = year\n",
+    "        self.odomoter_reading = 0\n",
+    "\n",
+    "    def get_descriptive_name(self):\n",
+    "        \"\"\"Return a neatly formatted descriptive name.\"\"\"\n",
+    "        long_name = f\"{self.year} {self.make} {self.model}\"\n",
+    "        return long_name\n",
+    "\n",
+    "    def read_odometer(self):\n",
+    "        \"\"\"Print a statement showing the car's mileage\"\"\"\n",
+    "        print(f\"This car has {self.odomoter_reading} miles on it.\")\n",
+    "\n",
+    "    def update_odometer(self, mileage):\n",
+    "        \"\"\"Set odometer reading to the given value.\"\"\"\n",
+    "        self.odomoter_reading = mileage\n",
+    "\n",
+    "\n",
+    "my_new_car = Car(make, model, year)\n",
+    "print(my_new_car.get_descriptive_name())\n",
+    "\n",
+    "# Access odometer_reading() attribute and change it via this specific instance\n",
+    "my_new_car.odomoter_reading = 23\n",
+    "my_new_car.read_odometer()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can extend the method update_odometer() to do additional work every time the odometer reading is modified. Let’s add a little logic to make sure no one tries to roll back the odometer reading:\n",
+    "\n",
+    "Now update_odometer() checks that the new reading makes sense before modifying the attribute. If the new mileage, mileage, is greater than or equal to the existing mileage, self.odometer_reading, you can update the odometer reading to the new mileage u. If the new mileage is less than the existing mileage, you’ll get a warning that you can’t roll back an odometer v."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2020 Ford F150\n",
+      "This car has 23 miles on it.\n"
+     ]
+    }
+   ],
+   "source": [
+    "make = input('What is the make of your new car?')\n",
+    "model = input('What is the model of your new car?')\n",
+    "year = input('What is the year of the new car?')\n",
+    "\n",
+    "class Car:\n",
+    "    def __init__(self, make, model, year):\n",
+    "        \"\"\"Initialize attributes to describe a car.\"\"\"\n",
+    "        self.make = make.title()\n",
+    "        self.model = model.title()\n",
+    "        self.year = year\n",
+    "        self.odomoter_reading = 0\n",
+    "\n",
+    "    def get_descriptive_name(self):\n",
+    "        \"\"\"Return a neatly formatted descriptive name.\"\"\"\n",
+    "        long_name = f\"{self.year} {self.make} {self.model}\"\n",
+    "        return long_name\n",
+    "\n",
+    "    def read_odometer(self):\n",
+    "        \"\"\"Print a statement showing the car's mileage\"\"\"\n",
+    "        print(f\"This car has {self.odomoter_reading} miles on it.\")\n",
+    "\n",
+    "    def update_odometer(self, mileage):\n",
+    "        \"\"\"Set odometer reading to the given value.\n",
+    "        Reject the change if it attempts to roll the odometer back.\n",
+    "        \"\"\"\n",
+    "        if mileage >= self.odomoter_reading:\n",
+    "            self.odomoter_reading = mileage\n",
+    "        else:\n",
+    "            print(\"You can't roll back the odometer!\")\n",
+    "\n",
+    "my_new_car = Car(make, model, year)\n",
+    "print(my_new_car.get_descriptive_name())\n",
+    "\n",
+    "# Access odometer_reading() attribute and change it via this specific instance\n",
+    "my_new_car.odomoter_reading = 23\n",
+    "my_new_car.read_odometer()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Incrementing an Attribute’s Value Through a Method\n",
+    "\n",
+    "Sometimes you’ll want to increment an attribute’s value by a certain amount rather than set an entirely new value. Say we buy a used car and put 100 miles on it between the time we buy it and the time we register it. Here’s a method that allows us to pass this incremental amount and add that value to the odometer reading:\n",
+    "\n",
+    "The new method increment_odometer() at u takes in a number of miles, and adds this value to self.odometer_reading. At v we create a used car, my_used_car. We set its odometer to 23,500 by calling update_odometer() and passing it 23_500 at w. At x we call increment_odometer() and pass it 100 to add the 100 miles that we drove between buying the car and registering it:\n",
+    "\n",
+    "You can easily modify this method to reject negative increments so no one uses this function to roll back an odometer.\n",
+    "\n",
+    "**NOTE** ***You can use methods like this to control how users of your program update values such as an odometer reading, but anyone with access to the program can set the odometer reading to any value by accessing the attribute directly. Effective security takes extreme attention to detail in addition to basic checks like those shown here.***"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2020 Ford F150\n",
+      "This car has 23500 miles on it.\n",
+      "This car has 23600 miles on it.\n"
+     ]
+    }
+   ],
+   "source": [
+    "make = input('What is the make of your new car?')\n",
+    "model = input('What is the model of your new car?')\n",
+    "year = input('What is the year of the new car?')\n",
+    "\n",
+    "class Car:\n",
+    "    def __init__(self, make, model, year):\n",
+    "        \"\"\"Initialize attributes to describe a car.\"\"\"\n",
+    "        self.make = make.title()\n",
+    "        self.model = model.title()\n",
+    "        self.year = year\n",
+    "        self.odomoter_reading = 0\n",
+    "\n",
+    "    def get_descriptive_name(self):\n",
+    "        \"\"\"Return a neatly formatted descriptive name.\"\"\"\n",
+    "        long_name = f\"{self.year} {self.make} {self.model}\"\n",
+    "        return long_name\n",
+    "\n",
+    "    def read_odometer(self):\n",
+    "        \"\"\"Print a statement showing the car's mileage\"\"\"\n",
+    "        print(f\"This car has {self.odomoter_reading} miles on it.\")\n",
+    "\n",
+    "    def update_odometer(self, mileage):\n",
+    "        \"\"\"Set odometer reading to the given value.\n",
+    "        Reject the change if it attempts to roll the odometer back.\n",
+    "        \"\"\"\n",
+    "        if mileage >= self.odomoter_reading:\n",
+    "            self.odomoter_reading = mileage\n",
+    "        else:\n",
+    "            print(\"You can't roll back the odometer!\")\n",
+    "\n",
+    "    def increment_odometer(self, miles):\n",
+    "        \"\"\"Add the given amount to the odometer reading.\"\"\"\n",
+    "        self.odomoter_reading += miles\n",
+    "\n",
+    "my_new_car = Car(make, model, year)\n",
+    "print(my_new_car.get_descriptive_name())\n",
+    "\n",
+    "my_new_car.update_odometer(23_500)\n",
+    "my_new_car.read_odometer()\n",
+    "\n",
+    "my_new_car.increment_odometer(100)\n",
+    "my_new_car.read_odometer()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Try IT yourself\n",
+    "\n",
+    "9-4. Number Served: Start with your program from Exercise 9-1 (page 162). Add an attribute called number_served with a default value of 0. Create an instance called restaurant from this class. Print the number of customers the restaurant has served, and then change this value and print it again.\n",
+    "\n",
+    "Add a method called set_number_served() that lets you set the number of customers that have been served. Call this method with a new number and print the value again.\n",
+    "\n",
+    "Add a method called increment_number_served() that lets you increment the number of customers who’ve been served. Call this method with any num-ber you like that could represent how many customers were served in, say, a day of business.\n",
+    "\n",
+    "9-5. Login Attempts: Add an attribute called login_attempts to your Userclass from Exercise 9-3 (page 162). Write a method called increment_login_attempts() that increments the value of login_attempts by 1. Write another method called reset_login_attempts() that resets the value of login_attemptsto 0.\n",
+    "\n",
+    "Make an instance of the User class and call increment_login_attempts()several times. Print the value of login_attempts to make sure it was incremented properly, and then call reset_login_attempts(). Print login_attempts again to make sure it was reset to 0."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "My favorite restaurant is Wonton Central and they offer chinese to eat.\n",
+      "\n",
+      "Your favorite resaurant is Texas Roadhouse and they offer barbecue as a cuisine.\n",
+      "\n",
+      "Wonton Central offers chinese as a cuisine option.\n",
+      "Texas Roadhouse is now open for business!\n",
+      "\n",
+      "\n",
+      "Wonton Central is now open for business!\n",
+      "Texas Roadhouse offers barbecue as a cuisine option.\n"
+     ]
+    }
+   ],
+   "source": [
+    "class Restaurant:\n",
+    "    \"\"\"Create a model for a restaurant and its attributes.\"\"\"\n",
+    "\n",
+    "    def __init__(self, restaurant_name, cuisine_type):\n",
+    "        self.restaurant_name = restaurant_name.title()\n",
+    "        self.cuisine_type = cuisine_type\n",
+    "        self.number_served = 0\n",
+    "\n",
+    "    def describe_restaurant(self):\n",
+    "        \"\"\"Prints the restaurant name and cuisine type.\"\"\"\n",
+    "        print(f\"{self.restaurant_name} offers {self.cuisine_type} as a cuisine option.\")\n",
+    "\n",
+    "    \n",
+    "    def open_restaurant(self):\n",
+    "        \"\"\"Print a message indicating a restaurant is open.\"\"\"\n",
+    "        print(f\"{self.restaurant_name} is now open for business!\")\n",
+    "\n",
+    "    def set_number_served(self, customer_number):\n",
+    "        \"\"\"Print the number of customers served.\"\"\"\n",
+    "        if customer_number >= self.number_served:\n",
+    "            self.number_served = customer_number\n",
+    "        else:\n",
+    "            print(\"You can't subtract from the current number of customers served!\")\n",
+    "        \n",
+    "\n",
+    "my_restaurant = Restaurant('wonton central', 'chinese')\n",
+    "your_restaurant = Restaurant('texas roadhouse', 'barbecue')\n",
+    "\n",
+    "print(f\"\\nMy favorite restaurant is {my_restaurant.restaurant_name} and they offer {my_restaurant.cuisine_type} to eat.\")\n",
+    "print(f\"\\nYour favorite resaurant is {your_restaurant.restaurant_name} and they offer {your_restaurant.cuisine_type} as a cuisine.\\n\")\n",
+    "\n",
+    "my_restaurant.describe_restaurant()\n",
+    "your_restaurant.open_restaurant()\n",
+    "print(\"\\n\")\n",
+    "my_restaurant.open_restaurant()\n",
+    "your_restaurant.describe_restaurant()\n",
+    "print(\"\\n\")\n",
+    "\n",
+    "# restaurant = Restaurant('wonton central', 'chinese')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To make the class more interesting, let’s add an attribute that changes\n",
+    "over time. We’ll add an attribute that stores the car’s overall mileage."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Setting a Default Value for an Attribute\n",
+    "***When an instance is created, attributes can be defined without being\n",
+    "passed in as parameters. These attributes can be defined in the `__init__()`\n",
+    "method, where they are assigned a default value.***\n",
+    "\n",
+    "Let’s add an attribute called odometer_reading that always starts with a\n",
+    "value of 0. We’ll also add a method read_odometer() that helps us read each\n",
+    "car’s odometer:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "interpreter": {
+   "hash": "2e31564484c1c54e848461919d3287074458f0f32661d488946c233f7cbd1466"
+  },
+  "kernelspec": {
+   "display_name": "Python 3.9.7 64-bit",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.0"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
