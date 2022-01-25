@@ -65,7 +65,6 @@ class Battery(Car):
             range = 260
         elif self.battery_size == 100:
             range = 315
-
         battery_range_statement = f"The {self.year} {self.make} {self.model} has a {self.battery_size}-kWh battery "
         battery_range_statement += f"and can go about {range} miles on full charge."
         return battery_range_statement
