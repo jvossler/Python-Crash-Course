@@ -1,4 +1,4 @@
-"""A class that can be used to represent a car."""
+"""A set of classes used to represent gas and electric cars."""
 
 class Car:
     """A simple attempt to represent a car."""
@@ -13,12 +13,15 @@ class Car:
     def get_descriptive_name(self):
         """Return a neatly formatted descriptive name."""
         long_name = f"{self.year} {self.make} {self.model}"
-        return long_name.title()
+        long_name = long_name.title()
+        # print(long_name)
+        return long_name
     
     def read_odometer(self):
         """Print a statement showing the car's mileage."""
         odometer_reading = f"The {self.year} {self.make} {self.model} has {self.odometer_reading} miles on it."
-        return odometer_reading
+        print(odometer_reading)
+        # return odometer_reading
 
     def update_odometer(self, mileage):
         """
@@ -43,7 +46,6 @@ class ElectricCar(Car):
         Then initialize attributes specific to an electric car.
         """
         super().__init__(make, model, year)
-        # self.battery_size = 75
         self.battery = Battery(make, model, year)
 
 class Battery(Car):
@@ -57,6 +59,7 @@ class Battery(Car):
     def describe_battery(self):
         """Print a statement describing the battery size."""
         battery_size_statement = f"The {self.year} {self.make} {self.model} has a {self.battery_size}-kWh battery."
+        # print(battery_size_statement)
         return battery_size_statement
 
     def get_range(self):
@@ -67,6 +70,7 @@ class Battery(Car):
             range = 315
         battery_range_statement = f"The {self.year} {self.make} {self.model} has a {self.battery_size}-kWh battery "
         battery_range_statement += f"and can go about {range} miles on full charge."
+        # print(battery_range_statement)
         return battery_range_statement
 
     def upgrade_battery(self):
