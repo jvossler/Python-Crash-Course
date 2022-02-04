@@ -16,6 +16,7 @@ class Die:
         self.sides = sides
 
     def roll_die(self):
-        """Roll a die and output the results of the roll."""
+        """Roll a die and return the results of the roll."""
         die_roll = randint(1,self.sides)
         print(f"You rolled a {die_roll}.")
+        # return randint(1, self.sides)
