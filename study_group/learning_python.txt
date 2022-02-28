@@ -1,0 +1,9 @@
+In Python you can create and modify lists, tuples, and dictionaries to write and store dataframes.
+
+In Python you can perform mathematical functions.
+
+In Python you can create classes and functions to perform operations.
+
+In Python you can read and write to files for data storage and analysis.
+
+In Python you can use APIs to interface with other applications and services.
